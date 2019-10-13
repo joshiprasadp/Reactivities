@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Persistence;
 using Persitstence;
 
 namespace API
@@ -25,6 +26,7 @@ namespace API
                 {
                     var context = serviceProvider.GetRequiredService<DataContext>();
                     context.Database.Migrate();
+                    SeedData.InsertData(context);
                 }
                 catch (System.Exception ex)
                 {
