@@ -27,6 +27,15 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(cor =>
+            {
+                cor.AddPolicy("CorsPolicy", p =>
+                {
+                    p.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins("http://localhost:3000");
+                });
+            });
             services.AddDbContext<DataContext>(o =>
             {
                 o.UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
@@ -37,6 +46,7 @@ namespace API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -48,6 +58,7 @@ namespace API
             }
 
             // app.UseHttpsRedirection();
+            app.UseCors("CorsPolicy");
             app.UseMvc();
         }
     }
